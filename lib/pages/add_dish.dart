@@ -10,7 +10,7 @@ class AddDish extends StatefulWidget {
 class _AddDishState extends State<AddDish> {
 
   final colorBackground = Color.fromRGBO(235, 246, 232, 1.0);
-  final colorWhite = Color.fromRGBO(241, 238, 238, 1.0);
+  final colorWhite = Color.fromRGBO(244, 244, 244, 1.0);
   final colorGray = Color.fromRGBO(60, 61, 60, 1.0);
   final colorBlue = Color.fromRGBO(87, 174, 211, 1.0);
 
