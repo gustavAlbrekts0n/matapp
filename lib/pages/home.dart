@@ -14,6 +14,8 @@ class _HomeState extends State<Home> {
   final colorGray = Color.fromRGBO(60, 61, 60, 1.0);
   final colorBlue = Color.fromRGBO(87, 174, 211, 1.0);
 
+  final cardMargin = 8.0;
+
   List<Dish> dishes = [
     Dish(name: "Köttfärssås och spaghetti", time: "20 min"),
     Dish(name: "Panerad torsk med potatismos", time: "15 min"),
@@ -28,18 +30,23 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        titleSpacing: cardMargin * 2,
         title: Text(
           "Maträtter",
           style: TextStyle(
             color: colorGray,
             fontFamily: "Roboto-Bold",
+            fontSize: 18.0,
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.sort),
-            color: colorGray,
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, cardMargin, 0),
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.sort),
+              color: colorGray,
+            ),
           ),
         ],
       ),
@@ -48,7 +55,7 @@ class _HomeState extends State<Home> {
         itemBuilder: (context, index) {
         return Card(
           color: colorWhite,
-          margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+          margin: EdgeInsets.fromLTRB(cardMargin * 2, cardMargin, cardMargin * 2, cardMargin),
           elevation: 2.0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -79,6 +86,22 @@ class _HomeState extends State<Home> {
           ),
         );
       }),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.transparent,
+        elevation: 0.0,
+        child: Container(height: 50.0,),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: colorBlue,
+        onPressed: () {
+          Navigator.pushNamed(context, "/add");
+        },
+        child: const Icon(
+          Icons.add_rounded,
+          size: 32.0,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
