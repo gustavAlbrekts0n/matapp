@@ -10,7 +10,6 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  final _formKey = GlobalKey();
 
   final DishService _dishService = DishService();
 
@@ -87,6 +86,7 @@ class HomeState extends State<Home> {
               children: [
                 Column(
                   textDirection: TextDirection.ltr,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -96,29 +96,173 @@ class HomeState extends State<Home> {
                         fontFamily: "Roboto",
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        final returnDish = Navigator.pushNamed(
-                          context,
-                          "/edit",
-                          arguments: Dish(
-                            name: dishList[index].name,
-                            time: dishList[index].time,
-                            desc: dishList[index].desc,
+                    Row(
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            /*
+                            final returnDish = Navigator.pushNamed(
+                              context,
+                              "/edit",
+                              arguments: Dish(
+                                name: dishList[index].name,
+                                time: dishList[index].time,
+                                desc: dishList[index].desc,
+                              ),
+                            );
+                            print(returnDish);
+                             */
+                            textControllerName.text = dishList[index].name;
+                            textControllerTime.text = dishList[index].time;
+                            textControllerDesc.text = dishList[index].desc;
+
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    title: Text("Redigera maträtt"),
+                                    content:
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.all(4.0),
+                                          child: TextFormField(
+                                            controller: textControllerName,
+                                            minLines: 1,
+                                            maxLines: 1,
+                                            keyboardType: TextInputType.text,
+                                            decoration: InputDecoration(
+                                              labelStyle: TextStyle(
+                                                color: colorGray,
+                                                fontFamily: "Roboto",
+                                                fontSize: fontSizeFormLabel,
+                                              ),
+                                              labelText: "Namn",
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: colorBlue, width: 2.0),
+                                              ),
+                                              border: OutlineInputBorder(),
+                                            ),
+                                            style: TextStyle(
+                                              color: colorGray,
+                                              fontFamily: "Roboto",
+                                              fontSize: 14.0,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(4.0),
+                                          child: TextFormField(
+                                            controller: textControllerTime,
+                                            minLines: 1,
+                                            maxLines: 1,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                              labelStyle: TextStyle(
+                                                color: colorGray,
+                                                fontFamily: "Roboto",
+                                                fontSize: fontSizeFormLabel,
+                                              ),
+                                              labelText: "Tillagningstid i minuter",
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: colorBlue, width: 2.0),
+                                              ),
+                                              border: OutlineInputBorder(),
+                                            ),
+                                            style: TextStyle(
+                                              color: colorGray,
+                                              fontFamily: "Roboto",
+                                              fontSize: 14.0,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(4.0),
+                                          child: TextFormField(
+                                            controller: textControllerDesc,
+                                            minLines: 1,
+                                            maxLines: 1,
+                                            keyboardType: TextInputType.text,
+                                            decoration: InputDecoration(
+                                              labelStyle: TextStyle(
+                                                color: colorGray,
+                                                fontFamily: "Roboto",
+                                                fontSize: fontSizeFormLabel,
+                                              ),
+                                              labelText: "Beskrivning",
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: colorBlue, width: 2.0),
+                                              ),
+                                              border: OutlineInputBorder(),
+                                            ),
+                                            style: TextStyle(
+                                              color: colorGray,
+                                              fontFamily: "Roboto",
+                                              fontSize: 14.0,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+
+                                              // Kontrollera så att alla fält är ifyllda
+                                              if (textControllerName.text.isNotEmpty && textControllerTime.text.isNotEmpty && textControllerDesc.text.isNotEmpty) {
+
+                                                updateDish(index);
+
+                                              } else {
+                                                print("Empty field(s)!");
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                                primary: colorBlue,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(12),
+                                                )
+                                            ),
+                                            child: const Text("Spara"),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                );
+                              },
+                            );
+                          },
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            minimumSize: const Size(26.0, 26.0),
+                            alignment: Alignment.center,
                           ),
-                        );
-                        print(returnDish);
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        minimumSize: const Size(26.0, 26.0),
-                        alignment: Alignment.center,
-                      ),
-                      child: Icon(
-                        Icons.edit,
-                        size: 26.0,
-                        color: colorGray,
-                      ),
+                          child: Icon(
+                            Icons.edit,
+                            size: 26.0,
+                            color: colorGray,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              dishList.removeAt(index);
+                            });
+                          },
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            minimumSize: const Size(26.0, 26.0),
+                            alignment: Alignment.center,
+                          ),
+                          child: Icon(
+                            Icons.delete,
+                            size: 26.0,
+                            color: colorGray,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -146,10 +290,9 @@ class HomeState extends State<Home> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text("Lägg till maträtt:"),
-                  content: Stack(
-                    children: [
-                      Positioned(
+                  title: Text("Lägg till maträtt"),
+                  content:
+                      /*Positioned(
                           right: -40.0,
                           top: -40.0,
                           child: InkResponse(
@@ -161,129 +304,115 @@ class HomeState extends State<Home> {
                               child: Icon(Icons.close),
                             ),
                           ),
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                controller: textControllerName,
-                                minLines: 1,
-                                maxLines: 1,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  labelStyle: TextStyle(
-                                    color: colorGray,
-                                    fontFamily: "Roboto",
-                                    fontSize: fontSizeFormLabel,
-                                  ),
-                                  labelText: "Namn",
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: colorBlue, width: 2.0),
-                                  ),
-                                  border: OutlineInputBorder(),
-                                ),
-                                style: TextStyle(
+                      ),*/
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: TextFormField(
+                              controller: textControllerName,
+                              minLines: 1,
+                              maxLines: 1,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                labelStyle: TextStyle(
                                   color: colorGray,
                                   fontFamily: "Roboto",
-                                  fontSize: 14.0,
+                                  fontSize: fontSizeFormLabel,
                                 ),
+                                labelText: "Namn",
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: colorBlue, width: 2.0),
+                                ),
+                                border: OutlineInputBorder(),
+                              ),
+                              style: TextStyle(
+                                color: colorGray,
+                                fontFamily: "Roboto",
+                                fontSize: 14.0,
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                controller: textControllerTime,
-                                minLines: 1,
-                                maxLines: 1,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelStyle: TextStyle(
-                                    color: colorGray,
-                                    fontFamily: "Roboto",
-                                    fontSize: fontSizeFormLabel,
-                                  ),
-                                  labelText: "Tillagningstid i minuter",
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: colorBlue, width: 2.0),
-                                  ),
-                                  border: OutlineInputBorder(),
-                                ),
-                                style: TextStyle(
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: TextFormField(
+                              controller: textControllerTime,
+                              minLines: 1,
+                              maxLines: 1,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelStyle: TextStyle(
                                   color: colorGray,
                                   fontFamily: "Roboto",
-                                  fontSize: 14.0,
+                                  fontSize: fontSizeFormLabel,
                                 ),
+                                labelText: "Tillagningstid i minuter",
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: colorBlue, width: 2.0),
+                                ),
+                                border: OutlineInputBorder(),
+                              ),
+                              style: TextStyle(
+                                color: colorGray,
+                                fontFamily: "Roboto",
+                                fontSize: 14.0,
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                controller: textControllerDesc,
-                                minLines: 1,
-                                maxLines: 1,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  labelStyle: TextStyle(
-                                    color: colorGray,
-                                    fontFamily: "Roboto",
-                                    fontSize: fontSizeFormLabel,
-                                  ),
-                                  labelText: "Beskrivning",
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: colorBlue, width: 2.0),
-                                  ),
-                                  border: OutlineInputBorder(),
-                                ),
-                                style: TextStyle(
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: TextFormField(
+                              controller: textControllerDesc,
+                              minLines: 1,
+                              maxLines: 1,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                labelStyle: TextStyle(
                                   color: colorGray,
                                   fontFamily: "Roboto",
-                                  fontSize: 14.0,
+                                  fontSize: fontSizeFormLabel,
                                 ),
+                                labelText: "Beskrivning",
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: colorBlue, width: 2.0),
+                                ),
+                                border: OutlineInputBorder(),
+                              ),
+                              style: TextStyle(
+                                color: colorGray,
+                                fontFamily: "Roboto",
+                                fontSize: 14.0,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ElevatedButton(
-                                onPressed: () {
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
 
-                                  if (textControllerName.text.isNotEmpty && textControllerTime.text.isNotEmpty && textControllerDesc.text.isNotEmpty) {
-                                    // Lägg till maträtt i listan
-                                    addDish(Dish(
-                                        name: textControllerName.text,
-                                        time: textControllerTime.text,
-                                        desc: textControllerDesc.text
-                                    ));
+                                // Kontrollera så att alla fält är ifyllda
+                                if (textControllerName.text.isNotEmpty && textControllerTime.text.isNotEmpty && textControllerDesc.text.isNotEmpty) {
 
-                                    // Rensa controllers för tomma fält inför nästa gång
-                                    textControllerName.clear();
-                                    textControllerTime.clear();
-                                    textControllerDesc.clear();
+                                  addButtonPressed();
 
-                                    // Lämna rutan
-                                    Navigator.of(context).pop();
-
-                                  } else {
-                                    print("Empty field(s)!");
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    primary: colorBlue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    )
-                                ),
-                                child: const Text("Spara"),
+                                } else {
+                                  print("Empty field(s)!");
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  primary: colorBlue,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  )
                               ),
-                            )
-                          ],
-                        ),
+                              child: const Text("Spara"),
+                            ),
+                          ),
+                        ],
                       )
-                    ],
-                  ),
                 );
               },
           );
@@ -301,5 +430,41 @@ class HomeState extends State<Home> {
     setState(() {
       dishList.add(dish);
     });
+  }
+
+  void addButtonPressed() {
+    // Lägg till maträtt i listan
+    addDish(Dish(
+        name: textControllerName.text,
+        time: textControllerTime.text,
+        desc: textControllerDesc.text
+    ));
+
+    clearControllers();
+
+    // Lämna rutan
+    Navigator.of(context).pop();
+  }
+
+  void updateDish(int index) {
+    setState(() {
+      dishList[index] = Dish(
+          name: textControllerName.text,
+          time: textControllerTime.text,
+          desc: textControllerDesc.text
+      );
+    });
+
+    clearControllers();
+
+    // Lämna rutan
+    Navigator.of(context).pop();
+  }
+
+  void clearControllers() {
+    // Rensa controllers för tomma fält inför nästa gång
+    textControllerName.clear();
+    textControllerTime.clear();
+    textControllerDesc.clear();
   }
 }
