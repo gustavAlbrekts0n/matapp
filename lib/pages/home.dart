@@ -27,10 +27,10 @@ class HomeState extends State<Home> {
   final cardMargin = 7.5;
 
   List<Dish> dishList = [
+    Dish(name: "Äppelpaj m. vaniljsås", time: "40", desc: "En klassisk knäckig äppelpaj passar alltid som ett sött avslut på middagen."),
     Dish(name: "Köttfärssås och spaghetti", time: "20", desc: "Favoritmat nummer ett! Alla - oavsett ålder - älskar spagetti och köttfärssås! Här är ett smakfullt och pålitligt recept som du lyckas med. Servera gärna med riven parmesanost."),
     Dish(name: "Panerad torsk med potatismos", time: "15", desc: "Fisk är både gott och nyttigt! Extra smarrig blir fisken med en god panering och ett krämigt mos till. Servera med kokt broccoli som fortfarande får behålla lite krispighet och lite citron att pressa på toppen."),
     Dish(name: "Risotto m. svamp och tomat", time: "30", desc: "En riktigt krämig risotto med goda smaker av svamp, spenat och tomat. Följ det här receptet och du har alla chanser att lyckas med en perfekt kokt risotto med stor krämighet och det perfekta lilla tuggmotståndet. När du lärt dig grunden är det lätt att variera din risotto med andra smaker."),
-    Dish(name: "Äppelpaj m. vaniljsås", time: "30-40", desc: "En klassisk knäckig äppelpaj passar alltid som ett sött avslut på middagen."),
   ];
 
   @override
@@ -52,12 +52,38 @@ class HomeState extends State<Home> {
         actions: [
           Padding(
             padding: EdgeInsets.fromLTRB(0, 0, cardMargin, 0),
-            child: IconButton(
+            child: TextButton(
               onPressed: () {
-                print("Coming soon...");
+                sortByName();
               },
-              icon: const Icon(Icons.sort),
-              color: colorGray,
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                minimumSize: const Size(26.0, 26.0),
+                alignment: Alignment.center,
+              ),
+              child: Icon(
+                Icons.sort_by_alpha,
+                size: 26.0,
+                color: colorGray,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, cardMargin, 0),
+            child: TextButton(
+              onPressed: () {
+                sortByTime();
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                minimumSize: const Size(26.0, 26.0),
+                alignment: Alignment.center,
+              ),
+              child: Icon(
+                Icons.sort,
+                size: 26.0,
+                color: colorGray,
+              ),
             ),
           ),
         ],
@@ -453,6 +479,7 @@ class HomeState extends State<Home> {
           time: textControllerTime.text,
           desc: textControllerDesc.text
       );
+
     });
 
     clearControllers();
@@ -466,5 +493,23 @@ class HomeState extends State<Home> {
     textControllerName.clear();
     textControllerTime.clear();
     textControllerDesc.clear();
+  }
+
+  void sortByName() {
+    setState(() {
+      dishList.sort((a, b) {
+        return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+      });
+    });
+  }
+
+  void sortByTime() {
+    setState(() {
+      dishList.sort((a, b) {
+        int n = int.parse(a.time);
+        int m = int.parse(b.time);
+        return n.compareTo(m);
+      });
+    });
   }
 }
